@@ -1,0 +1,6 @@
+Task number: 07
+Purpose: Record successful application of the Guestbook Deployment.
+Command or source code: Intended command: `kubectl apply -f deployment.yml`.
+Actual execution output: Not available. Environment audit: `Get-Command kubectl` reported `kubectl: NOT INSTALLED`.
+Execution status: BLOCKED (cluster access and a real registry image reference unavailable).
+Observations: `deployment.yml` contains a placeholder registry namespace and must be updated before applying. No successful apply is claimed.

@@ -1,0 +1,6 @@
+Task number: 04
+Purpose: Capture the requested HPA/zero-replica observation without configuring an invalid HPA minimum.
+Command or source code: Intended live commands: `kubectl get hpa` and `kubectl get deployments`.
+Actual execution output: Not available. Environment audit: `Get-Command kubectl` reported `kubectl: NOT INSTALLED`.
+Execution status: BLOCKED (cluster unavailable).
+Observations: The manifest uses the Kubernetes-valid `minReplicas: 1`. An HPA configured with a minimum of zero is not valid. No zero-replica observation is claimed; any transient live observation must be captured from the course cluster and cannot be guaranteed.

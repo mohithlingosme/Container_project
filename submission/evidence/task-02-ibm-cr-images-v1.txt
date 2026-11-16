@@ -1,0 +1,6 @@
+Task number: 02
+Purpose: Verify the v1 image in IBM Cloud Container Registry.
+Command or source code: `ibmcloud cr images`
+Actual execution output: Not available. Environment audit: `Get-Command ibmcloud` reported `ibmcloud: NOT INSTALLED`.
+Execution status: BLOCKED (IBM Cloud CLI, registry plugin, and authenticated account unavailable).
+Observations: No registry namespace or v1 image could be discovered or verified. No output is fabricated.

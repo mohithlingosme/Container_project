@@ -1,0 +1,18 @@
+Task number: 01
+Purpose: Provide the Dockerfile used to package the Guestbook.
+Command or source code:
+```dockerfile
+FROM nginx:1.27-alpine
+
+COPY index.html /usr/share/nginx/html/index.html
+
+EXPOSE 80
+
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD wget -q -O /dev/null http://127.0.0.1/ || exit 1
+
+CMD ["nginx", "-g", "daemon off;"]
+```
+Execution output: Docker image build was not run; the Docker CLI is not installed (`Get-Command docker` reported NOT INSTALLED).
+Execution status: BLOCKED (image build/inspection unavailable).
+Observations: Dockerfile source is present at the project root. No successful image build is claimed.

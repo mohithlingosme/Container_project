@@ -1,0 +1,6 @@
+Task number: 10
+Purpose: Record ReplicaSets and pods after a genuine rollback.
+Command or source code: Intended commands: `kubectl rollout status deployment/guestbook`, `kubectl rollout history deployment/guestbook`, `kubectl get rs`, and `kubectl get pods`.
+Actual execution output: Not available. Environment audit: `Get-Command kubectl` reported `kubectl: NOT INSTALLED`.
+Execution status: BLOCKED (no cluster or rollback to inspect).
+Observations: No ReplicaSet names, pod counts, or rollback result are fabricated.

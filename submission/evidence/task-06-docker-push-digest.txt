@@ -1,0 +1,6 @@
+Task number: 06
+Purpose: Record the v2 image push output and digest.
+Command or source code: Intended commands: `docker build -t <registry>/<namespace>/guestbook:v2 .` and `docker push <registry>/<namespace>/guestbook:v2`.
+Actual execution output: Not available. Environment audit: `Get-Command docker` reported `docker: NOT INSTALLED`; `Get-Command ibmcloud` reported `ibmcloud: NOT INSTALLED`.
+Execution status: BLOCKED (Docker, IBM CLI, registry authentication, and discovered namespace unavailable).
+Observations: No digest is available. A digest or successful push is not fabricated.

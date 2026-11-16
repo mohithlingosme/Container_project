@@ -1,0 +1,6 @@
+Task number: 09
+Purpose: Capture a real Deployment revision with CPU configuration changes and verify rollout history/rollback.
+Command or source code: Intended commands: `kubectl rollout history deployment/guestbook`, followed by `kubectl rollout undo deployment/guestbook`.
+Actual execution output: Not available. Environment audit: `Get-Command kubectl` reported `kubectl: NOT INSTALLED`.
+Execution status: BLOCKED (no cluster or Deployment exists in this environment).
+Observations: No revision, CPU change, or rollback has been executed or claimed.
