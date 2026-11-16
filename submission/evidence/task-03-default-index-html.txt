@@ -7,13 +7,13 @@ Command or source code:
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Guestbook</title>
+  <title>Guestbook - v1</title>
 </head>
 <body>
-  <h1>Guestbook</h1>
+  <h1>Guestbook - v1</h1>
 </body>
 </html>
 ```
 Execution output: Source snapshot prepared for this evidence package. It documents the initial v1 content; the current root `index.html` is the requested v2 application.
 Execution status: COMPLETE (source evidence).
-Observations: The initial title and heading match the required exact text. This is a source snapshot, not evidence of a cloud deployment.
+Observations: The initial title and heading match the assignment's Guestbook - v1 wording. This is a source snapshot, not evidence of a cloud deployment.

@@ -32,7 +32,7 @@ The Deployment uses label-based selectors, HTTP probes, CPU request 50m / limit 
 
 ## Version 2, rolling update, and rollback
 
-The current `index.html` has the requested exact `<title>Guestbook – v2</title>` and an H1 of `Guestbook – v2`, using U+2013 EN DASH. The v2 image, rollout, CPU-related revision, and genuine rollback were not run because Docker, IBM Cloud access, and Kubernetes access are unavailable.
+The current `index.html` uses the latest assignment's accepted `<title>Guestbook - v2</title>` and `Guestbook - v2` heading. The initial v1 title/heading are preserved in the task 03 source evidence. The v2 image, rollout, CPU-related revision, and genuine rollback were not run because Docker, IBM Cloud access, and Kubernetes access are unavailable.
 
 ## Ten-task grading checklist
 
