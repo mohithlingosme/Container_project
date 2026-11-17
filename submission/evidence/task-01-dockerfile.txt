@@ -5,7 +5,8 @@ Application: Official IBM Skills Network Guestbook Go server, port 3000.
 
 Verification:
 - Dockerfile source is present.
-- The Go application compiled locally with Go 1.26.4.
+- Go module dependencies are pinned in `app/go.mod` and `app/go.sum`.
+- The Go application compiles, tests, and passes `go vet` locally with Go 1.26.4.
 - Docker image build: BLOCKED; Docker CLI/engine is not installed.
 
 No Docker image build success is claimed.

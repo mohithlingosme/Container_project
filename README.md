@@ -13,21 +13,21 @@ The upstream application is licensed under Apache-2.0; see [LICENSE](./LICENSE).
 - `hpa.yml` — CPU autoscaling configuration (1–4 replicas, 60% target).
 - `submission/evidence/` — source snapshots and actual execution blockers/results.
 
-## Run locally
+## Local development
 
-From `app/`, initialize the Go module and start the application:
+Go 1.18 or later is required. From the repository root, run:
 
 ```powershell
-go mod init guestbook
-go mod tidy
-go run main.go
+cd app
+go test ./...
+go run .
 ```
 
-Open `http://localhost:3000/`. The project was locally compiled with Go 1.26.4 and smoke-tested on port 3000. The Dockerfile pins its Go dependencies to versions compatible with the specified Go 1.18 builder; the container build has not been run because Docker is unavailable.
+Open `http://localhost:3000/`. The app uses in-memory storage unless Redis is configured, so local Guestbook entries are not durable and are lost when the process stops. The module dependencies are pinned in `app/go.mod` and `app/go.sum`.
 
-## Build and deploy
+## Optional container and Kubernetes configuration
 
-The registry host, namespace, IBM Cloud authentication, and Kubernetes cluster must be obtained from the intended course environment. Do not guess or commit credentials. Once those are available, build and push the v1/v2 image tags, replace the image placeholder in `deployment.yml`, then apply the Deployment, Service, and HPA to the authenticated cluster. Capture command output from that actual environment; local tests are not a substitute for cluster evidence.
+`Dockerfile`, `deployment.yml`, `service.yml`, and `hpa.yml` are retained as assignment configuration. Docker and Kubernetes are not required for local development and were not used for the verified local run. To complete cloud-specific assignment tasks, an authenticated IBM Container Registry namespace and real Kubernetes cluster are still required; local execution is not a substitute for their command output.
 
 `hpa.yml` has `minReplicas: 1` because Kubernetes HPA does not support a configured minimum of zero. Autoscaling, rollout history, and rollback remain unverified until run against a real cluster.
 

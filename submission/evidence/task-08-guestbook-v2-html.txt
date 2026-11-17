@@ -1,20 +1,18 @@
-Task 8 — Updated Guestbook v2 HTML and local application smoke test
+Task 8 — Updated Guestbook v2 HTML and local development verification
 
 Source snapshot: `submission/evidence/up-app`.
 
-The v2 title and heading are present in the official Guestbook frontend. The application was built in a temporary directory with Go 1.26.4 and run locally; Docker or Kubernetes was not involved.
+The v2 title and heading are present in the official Guestbook frontend. The application was built from the checked-in Go module with Go 1.26.4 and run locally; Docker or Kubernetes was not involved.
 
-Actual smoke-test results:
+Actual verification results:
 ```text
-GO_BUILD_EXIT=0
-HOME_STATUS=200 TITLE_OK=True HEADING_OK=True
+go test ./...: PASS
+go vet ./...: PASS
+LOCAL_BUILD=PASS
+GET /: HTTP 200; title=Guestbook - v2; heading=Guestbook - v2
 HELLO_STATUS=200
-RPUSH_BODY=[
-"smoke-test"
-]
-LRANGE_BODY=[
-"smoke-test"
-]
+GET /rpush/guestbook/local-dev-test: ["local-dev-test"]
+GET /lrange/guestbook: ["local-dev-test"]
 ```
 
-The entry was submitted through the Guestbook API and read back successfully. This verifies local source/runtime behavior only, not a cloud deployment.
+The entry was submitted through the Guestbook API and read back successfully. This verifies local source/runtime behavior only, not a container or cluster deployment.

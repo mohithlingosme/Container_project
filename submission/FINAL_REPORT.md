@@ -3,6 +3,8 @@
 ## Implementation completed locally
 
 - Replaced the NGINX-only container target with the official IBM Skills Network Guestbook Go server and its public assets under `app/`.
+- Added a pinned Go module manifest and lock file for repeatable local builds.
+- Added a Go test covering the in-memory Guestbook add-and-read flow.
 - Updated the page title and heading to Guestbook v2; preserved the full v1 HTML snapshot at `submission/evidence/app` and the v2 snapshot at `submission/evidence/up-app`.
 - Updated the Deployment and Service to use the app's HTTP port 3000 and a consistent `app: guestbook` selector. The Deployment retains the actual registry namespace as a placeholder rather than guessing it.
 - Retained an HPA manifest with CPU target 60%, minimum 1, and maximum 4 replicas.
@@ -11,9 +13,9 @@
 
 ## Local verification
 
-- Built the Go application with the installed Go 1.26.4 toolchain in a temporary build directory.
+- Built and tested the Go application with the installed Go 1.26.4 toolchain.
 - Ran the app and verified HTTP 200 on `/` and `/hello`; submitted a smoke-test entry through `/rpush/guestbook/smoke-test` and read it back through `/lrange/guestbook`.
-- Confirmed the source and manifests describe port 3000. The Dockerfile's Go 1.18 image build was not executed.
+- Confirmed the source and manifests describe port 3000. Docker and Kubernetes are not needed for this local workflow.
 
 These are local source/runtime checks only. They are not Docker, registry, or Kubernetes evidence.
 

@@ -1,6 +1,6 @@
 # IBM Kubernetes Guestbook — Assignment Answers
 
-These answers use checked-in project source and actual local test results. Cloud command output is included only when it was actually captured. This environment has no Docker engine, IBM Cloud CLI, `kubectl`, kubeconfig, or connected course cluster; cloud-dependent answers are therefore explicitly marked **BLOCKED** rather than fabricated.
+These answers use the local Go development workflow and actual local test results. This environment has no Docker engine, IBM Cloud CLI, `kubectl`, kubeconfig, or connected course cluster. IBM registry and Kubernetes outputs cannot be produced by local development, so cloud-specific questions are explicitly marked **NOT RUN LOCALLY** rather than fabricated. This local work does not substitute for cloud-execution marks in the course rubric.
 
 ## Question 1 — Dockerfile
 
@@ -9,11 +9,10 @@ FROM golang:1.18 AS builder
 
 WORKDIR /app
 
-COPY app/main.go .
+COPY app/go.mod app/go.sum ./
+RUN go mod download
 
-RUN go mod init guestbook
-RUN go mod edit '-require=github.com/codegangsta/negroni@v1.0.0' '-require=github.com/gorilla/mux@v1.8.0' '-require=github.com/xyproto/simpleredis/v2@v2.9.0'
-RUN go mod tidy
+COPY app/main.go .
 RUN go build -o main main.go
 
 FROM ubuntu:18.04
@@ -31,11 +30,11 @@ CMD ["./guestbook"]
 EXPOSE 3000
 ```
 
-The Go app compiled locally with Go 1.26.4 and passed a local HTTP/API smoke test. A Docker image build was **not run** because Docker and its engine are unavailable. Source copy: [`evidence/Dockerfile`](./evidence/Dockerfile).
+`app/go.mod` and `app/go.sum` pin the Go dependencies. The app builds and tests locally with Go 1.26.4; Docker image build was **not run** because Docker and its engine are unavailable. Source copy: [`evidence/Dockerfile`](./evidence/Dockerfile).
 
 ## Question 2 — IBM Container Registry images (v1)
 
-**BLOCKED — actual `ibmcloud cr images` output is unavailable.** IBM Cloud CLI/plugin, authenticated registry access, and the account's namespace are not present in this environment. No image listing or v1 tag is claimed. See [`evidence/task-02-ibm-cr-images-v1.txt`](./evidence/task-02-ibm-cr-images-v1.txt).
+**NOT RUN LOCALLY — actual `ibmcloud cr images` output is unavailable.** IBM Cloud CLI/plugin, authenticated registry access, and the account's namespace are not present in this environment. Local development does not create an IBM registry image or listing. No image listing or v1 tag is claimed. See [`evidence/task-02-ibm-cr-images-v1.txt`](./evidence/task-02-ibm-cr-images-v1.txt).
 
 ## Question 3 — Initial Guestbook HTML (v1)
 
@@ -84,19 +83,19 @@ This is the preserved v1 source snapshot at [`evidence/app`](./evidence/app), no
 
 ## Question 4 — Horizontal Pod Autoscaler
 
-**BLOCKED — actual `kubectl get hpa` table is unavailable.** The checked-in [`hpa.yml`](../hpa.yml) configures the `guestbook` Deployment target, CPU utilization target 60%, minimum 1 replica, and maximum 4 replicas. This manifest is configuration, not live HPA output. A zero minimum is not configured because Kubernetes HPA does not permit it. See [`evidence/task-04-hpa-zero-replicas.txt`](./evidence/task-04-hpa-zero-replicas.txt).
+**NOT RUN LOCALLY — actual `kubectl get hpa` table is unavailable.** The checked-in [`hpa.yml`](../hpa.yml) configures the `guestbook` Deployment target, CPU utilization target 60%, minimum 1 replica, and maximum 4 replicas. This manifest is configuration, not live HPA output. Local Go execution does not run an HPA. A zero minimum is not configured because Kubernetes HPA does not permit it. See [`evidence/task-04-hpa-zero-replicas.txt`](./evidence/task-04-hpa-zero-replicas.txt).
 
 ## Question 5 — Autoscaling results
 
-**BLOCKED — no cluster load test or replica increase was observed.** The cluster, metrics server, and `kubectl` are unavailable. No HPA metrics, replica counts, or successful autoscaling result can be supplied. The local Go app/API smoke test is not a Kubernetes autoscaling test. See [`evidence/task-05-autoscaling-replicas.txt`](./evidence/task-05-autoscaling-replicas.txt).
+**NOT RUN LOCALLY — no cluster load test or replica increase was observed.** The cluster, metrics server, and `kubectl` are unavailable. No HPA metrics, replica counts, or successful autoscaling result can be supplied. The local Go app/API test is not a Kubernetes autoscaling test. See [`evidence/task-05-autoscaling-replicas.txt`](./evidence/task-05-autoscaling-replicas.txt).
 
 ## Question 6 — Updated image push and digest
 
-**BLOCKED — no Docker push output or image digest exists.** Docker, IBM Cloud CLI, registry authentication, and the actual registry namespace are unavailable. See [`evidence/task-06-docker-push-digest.txt`](./evidence/task-06-docker-push-digest.txt).
+**NOT RUN LOCALLY — no Docker push output or image digest exists.** Docker, IBM Cloud CLI, registry authentication, and the actual registry namespace are unavailable. Local execution runs the Go process directly and does not create or push an image. See [`evidence/task-06-docker-push-digest.txt`](./evidence/task-06-docker-push-digest.txt).
 
 ## Question 7 — Updated Deployment apply
 
-**BLOCKED — no `kubectl apply` output exists.** `kubectl` and cluster access are unavailable. [`deployment.yml`](../deployment.yml) still has the explicit image placeholder `us.icr.io/REPLACE_WITH_NAMESPACE/guestbook:v2`; no registry namespace was guessed. See [`evidence/task-07-deployment-apply.txt`](./evidence/task-07-deployment-apply.txt).
+**NOT RUN LOCALLY — no `kubectl apply` output exists.** `kubectl` and cluster access are unavailable. [`deployment.yml`](../deployment.yml) still has the explicit image placeholder `us.icr.io/REPLACE_WITH_NAMESPACE/guestbook:v2`; no registry namespace was guessed. For local development, run `cd app`, `go test ./...`, then `go run .` and open `http://localhost:3000/`. See the local results under Question 8 and [`README.md`](../README.md).
 
 ## Question 8 — Updated Guestbook HTML (v2)
 
@@ -141,16 +140,27 @@ Complete source snapshot:
 </html>
 ```
 
-This source is preserved at [`evidence/up-app`](./evidence/up-app). The locally compiled app returned HTTP 200 on `/` and `/hello`; a message submitted to `/rpush/guestbook/smoke-test` was returned by `/lrange/guestbook`. This verifies local behavior only, not a container or cluster deployment. Full local results: [`evidence/task-08-guestbook-v2-html.txt`](./evidence/task-08-guestbook-v2-html.txt).
+This source is preserved at [`evidence/up-app`](./evidence/up-app). Local verification with Go 1.26.4:
+
+```text
+go test ./...: PASS
+go vet ./...: PASS
+GET /: HTTP 200; title and heading are Guestbook - v2
+GET /hello: HTTP 200
+GET /rpush/guestbook/local-dev-test: ["local-dev-test"]
+GET /lrange/guestbook: ["local-dev-test"]
+```
+
+This verifies the local application only, not a container or cluster deployment. Detailed results: [`evidence/task-08-guestbook-v2-html.txt`](./evidence/task-08-guestbook-v2-html.txt).
 
 ## Question 9 — Rollout history and CPU revision
 
-**BLOCKED — no Deployment rollout history or actual revision is available.** `kubectl` and a cluster context are absent; no CPU revision was created or inspected. The local Deployment manifest's CPU request/limit values are not rollout evidence. See [`evidence/task-09-rollout-history.txt`](./evidence/task-09-rollout-history.txt).
+**NOT RUN LOCALLY — no Deployment rollout history or actual revision is available.** `kubectl` and a cluster context are absent; no CPU revision was created or inspected. The local Deployment manifest's CPU request/limit values are not rollout evidence. See [`evidence/task-09-rollout-history.txt`](./evidence/task-09-rollout-history.txt).
 
 ## Question 10 — ReplicaSets after rollback
 
-**BLOCKED — no rollback was executed and no `kubectl get rs` output is available.** No ReplicaSet names, counts, or rollback result are claimed. See [`evidence/task-10-replicasets-after-rollback.txt`](./evidence/task-10-replicasets-after-rollback.txt).
+**NOT RUN LOCALLY — no rollback was executed and no `kubectl get rs` output is available.** No ReplicaSet names, counts, or rollback result are claimed. See [`evidence/task-10-replicasets-after-rollback.txt`](./evidence/task-10-replicasets-after-rollback.txt).
 
 ## Completion status
 
-This document provides the verified source answers for Questions 1, 3, and 8, plus the available local verification. It is **not a complete cloud-execution submission**: Questions 2, 4–7, and 9–10 require real output from the authenticated IBM Cloud registry and Kubernetes course environment.
+Run the app locally with Go using the commands in [`README.md`](../README.md). Local source answers and tests are verified, but this is **not a complete cloud-execution submission**: Questions 2, 4–7, and 9–10 require actual output from IBM Container Registry, Docker, and a Kubernetes cluster.

@@ -2,11 +2,10 @@ FROM golang:1.18 AS builder
 
 WORKDIR /app
 
-COPY app/main.go .
+COPY app/go.mod app/go.sum ./
+RUN go mod download
 
-RUN go mod init guestbook
-RUN go mod edit '-require=github.com/codegangsta/negroni@v1.0.0' '-require=github.com/gorilla/mux@v1.8.0' '-require=github.com/xyproto/simpleredis/v2@v2.9.0'
-RUN go mod tidy
+COPY app/main.go .
 RUN go build -o main main.go
 
 FROM ubuntu:18.04
