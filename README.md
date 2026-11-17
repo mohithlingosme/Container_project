@@ -33,4 +33,4 @@ The registry host, namespace, IBM Cloud authentication, and Kubernetes cluster m
 
 ## Submission status
 
-See [FINAL_REPORT.md](./submission/FINAL_REPORT.md) and [ASSIGNMENT_ANSWERS.md](./submission/ASSIGNMENT_ANSWERS.md). The answer package is not complete: required IBM registry and Kubernetes outputs cannot be produced without the corresponding authenticated tools and cluster.
+See [FINAL_REPORT.md](./submission/FINAL_REPORT.md) and [ASSIGNMENT_ANSWER.md](./submission/ASSIGNMENT_ANSWER.md). The cloud-dependent answers remain blocked until the authenticated IBM registry and Kubernetes environment is available.
