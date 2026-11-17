@@ -1,60 +1,46 @@
 # Guestbook Final Project — Execution Report
 
-## Assignment overview
+## Implementation completed locally
 
-The GitHub repository was empty when inspected. A responsive, static Guestbook and Kubernetes deployment configuration have been added. Entries are stored in browser `localStorage`; they are not shared across browsers or pods.
+- Replaced the NGINX-only container target with the official IBM Skills Network Guestbook Go server and its public assets under `app/`.
+- Updated the page title and heading to Guestbook v2; preserved the full v1 HTML snapshot at `submission/evidence/app` and the v2 snapshot at `submission/evidence/up-app`.
+- Updated the Deployment and Service to use the app's HTTP port 3000 and a consistent `app: guestbook` selector. The Deployment retains the actual registry namespace as a placeholder rather than guessing it.
+- Retained an HPA manifest with CPU target 60%, minimum 1, and maximum 4 replicas.
+- Pinned Go module versions in the Docker build, including `gorilla/mux` 1.8.0, because 1.8.1 requires Go 1.20 and is incompatible with the required Go 1.18 builder.
+- Added the upstream Apache-2.0 license.
 
-## Project architecture
+## Local verification
 
-NGINX serves a single-page HTML/CSS/JavaScript application on port 80. The Dockerfile includes an HTTP health check. Kubernetes resources include a one-replica Deployment with readiness/liveness probes, resource requests/limits, rolling-update settings, a NodePort Service, and an autoscaling/v2 HPA.
+- Built the Go application with the installed Go 1.26.4 toolchain in a temporary build directory.
+- Ran the app and verified HTTP 200 on `/` and `/hello`; submitted a smoke-test entry through `/rpush/guestbook/smoke-test` and read it back through `/lrange/guestbook`.
+- Confirmed the source and manifests describe port 3000. The Dockerfile's Go 1.18 image build was not executed.
 
-## Environment and execution
+These are local source/runtime checks only. They are not Docker, registry, or Kubernetes evidence.
 
-- The working environment is Windows PowerShell.
-- Git and GitHub CLI are installed; Git identity is configured.
-- The target GitHub repository was confirmed public and empty; GitHub CLI authentication was active.
-- Docker, IBM Cloud CLI, and kubectl were not installed (`Get-Command` reported each as `NOT INSTALLED`).
-- The local HTML page rendered in the browser; a submitted message was shown and remained after page reload. This verifies browser-side behavior only, not a container or cluster deployment.
-- Consequently there was no Docker daemon check, IBM Cloud target/registry authentication, active Kubernetes context, cluster connectivity, or live cluster output to report.
-- No image build/push, registry digest, manifest apply, autoscaling, rollout, or rollback is claimed.
+## External execution blockers
 
-## Docker image details
+- Docker CLI/engine: not installed.
+- IBM Cloud CLI and Container Registry plugin: not installed; no authenticated registry namespace was available.
+- kubectl: not installed; no kubeconfig or current cluster context exists.
+- Consequently, image build/push, digest, manifest apply, HPA observation, CPU-driven scaling, rollout revision, rollback, and ReplicaSet output remain unavailable.
 
-`Dockerfile` builds on `nginx:alpine`, copies `index.html` into the NGINX document root, exposes port 80, and serves in the foreground. Image tags v1 and v2 have not been built or pushed. The registry hostname, account namespace, and image reference remain unknown; `deployment.yml` therefore contains a clearly marked placeholder.
+## 15-mark readiness
 
-## Kubernetes deployment details
-
-The Deployment uses label-based selectors, HTTP probes, CPU request 50m / limit 250m, memory request 32Mi / limit 128Mi, and a rolling update strategy. The Service is NodePort. Manifests have not been submitted to a cluster.
-
-## Autoscaling results
-
-`hpa.yml` uses CPU utilization at 60%, minimum 1 replica, and maximum 4 replicas. This is a valid starting configuration, not a capacity-verified course-cluster limit. The HPA and metrics server were not available to test. No zero-replica HPA observation or CPU-triggered replica increase is recorded. Kubernetes HPA does not allow a configured minimum of zero; a possible transient live zero-replica reading is not guaranteed and must not be presented without cluster evidence.
-
-## Version 2, rolling update, and rollback
-
-The current `index.html` uses the latest assignment's accepted `<title>Guestbook - v2</title>` and `Guestbook - v2` heading. The initial v1 title/heading are preserved in the task 03 source evidence. The v2 image, rollout, CPU-related revision, and genuine rollback were not run because Docker, IBM Cloud access, and Kubernetes access are unavailable.
-
-## Ten-task grading checklist
-
-| Task | Result | Evidence |
+| Task | Status | Evidence / limitation |
 |---|---|---|
-| 01 Dockerfile | Source complete; image build blocked | `submission/evidence/task-01-dockerfile.txt` |
-| 02 IBM CR images v1 | Blocked: IBM CLI/auth unavailable | `submission/evidence/task-02-ibm-cr-images-v1.txt` |
-| 03 Default HTML | Initial source snapshot complete | `submission/evidence/task-03-default-index-html.txt` |
-| 04 HPA zero replicas | Blocked: no cluster; zero minimum invalid | `submission/evidence/task-04-hpa-zero-replicas.txt` |
-| 05 Autoscaling replicas | Blocked: no cluster/load observation | `submission/evidence/task-05-autoscaling-replicas.txt` |
-| 06 Docker push digest | Blocked: no Docker/IBM CLI | `submission/evidence/task-06-docker-push-digest.txt` |
-| 07 Deployment apply | Blocked: no kubectl/cluster; image placeholder | `submission/evidence/task-07-deployment-apply.txt` |
-| 08 Guestbook v2 HTML | Source complete; live verification blocked | `submission/evidence/task-08-guestbook-v2-html.txt` |
-| 09 Rollout history | Blocked: no cluster/revision | `submission/evidence/task-09-rollout-history.txt` |
-| 10 ReplicaSets after rollback | Blocked: no cluster/rollback | `submission/evidence/task-10-replicasets-after-rollback.txt` |
+| 01 Dockerfile | INCOMPLETE | Source is captured in `evidence/Dockerfile`; Docker image build not run. |
+| 02 Registry v1 image | BLOCKED | No IBM CLI, registry authentication, namespace, or `cr images` output. |
+| 03 Initial v1 HTML | VERIFIED | Complete v1 source in `evidence/app`. |
+| 04 HPA output | BLOCKED | No cluster or live `kubectl get hpa` output. |
+| 05 Autoscaling | BLOCKED | No cluster, metrics, or observed replica increase. |
+| 06 Updated image push | BLOCKED | No Docker/IBM CLI, registry access, push output, or digest. |
+| 07 Deployment apply | BLOCKED | No kubectl/cluster or real image reference. |
+| 08 Updated v2 HTML | VERIFIED | Complete v2 source in `evidence/up-app`; local Go smoke test passed. |
+| 09 CPU revision history | BLOCKED | No Deployment or real rollout history. |
+| 10 Rollback ReplicaSets | BLOCKED | No rollback or `kubectl get rs` output. |
 
-Evidence files are under `submission/evidence/`. Each records what is available and marks unavailable execution as blocked; no output, digest, timestamp, or replica count has been invented.
+The point allocation across tasks was not provided, so a numeric score out of 15 cannot be calculated reliably. A completed `answer.txt` is intentionally not generated from explanatory substitutes for the missing command outputs.
 
-## Outstanding blockers and next steps
+## GitHub status
 
-Install/start Docker Desktop, install/authenticate IBM Cloud CLI with the Container Registry plugin, select the intended IBM Cloud account/region, create or select a registry namespace, and obtain access to a running Kubernetes cluster with metrics-server. Then build and push v1/v2, replace the image placeholder, apply the manifests, capture actual command output, generate CPU load, and execute/verify the revision and rollback sequence. Do not commit credentials or local kubeconfig.
-
-## Score readiness
-
-**Verified score readiness: not determinable from the supplied information.** The point allocation across the ten tasks was not present in the empty repository, so assigning a numeric score out of 15 would be speculative. Source/configuration is prepared for tasks 01, 03, and 08, but no cloud-dependent marks are verified; the 70% passing threshold is not currently evidenced.
+The work is on branch `feature/guestbook-final-project`. Commit and push status is reported separately after repository operations complete.

@@ -1,10 +1,24 @@
-FROM nginx:alpine
+FROM golang:1.18 AS builder
 
-COPY index.html /usr/share/nginx/html/index.html
+WORKDIR /app
 
-EXPOSE 80
+COPY app/main.go .
 
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD wget -q -O /dev/null http://127.0.0.1/ || exit 1
+RUN go mod init guestbook
+RUN go mod edit '-require=github.com/codegangsta/negroni@v1.0.0' '-require=github.com/gorilla/mux@v1.8.0' '-require=github.com/xyproto/simpleredis/v2@v2.9.0'
+RUN go mod tidy
+RUN go build -o main main.go
 
-CMD ["nginx", "-g", "daemon off;"]
+FROM ubuntu:18.04
+
+COPY --from=builder /app/main /app/guestbook
+COPY app/public/index.html /app/public/index.html
+COPY app/public/script.js /app/public/script.js
+COPY app/public/style.css /app/public/style.css
+COPY app/public/jquery.min.js /app/public/jquery.min.js
+
+WORKDIR /app
+
+CMD ["./guestbook"]
+
+EXPOSE 3000

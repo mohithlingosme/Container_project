@@ -1,6 +1,6 @@
-Task number: 07
-Purpose: Record successful application of the Guestbook Deployment.
-Command or source code: Intended command: `kubectl apply -f deployment.yml`.
-Actual execution output: Not available. Environment audit: `Get-Command kubectl` reported `kubectl: NOT INSTALLED`.
-Execution status: BLOCKED (cluster access and a real registry image reference unavailable).
-Observations: `deployment.yml` contains a placeholder registry namespace and must be updated before applying. No successful apply is claimed.
+Task 7 — Updated Deployment apply
+
+Required command: `kubectl apply -f deployment.yml`
+Execution status: BLOCKED.
+
+kubectl and a cluster context are unavailable. The Deployment image remains `us.icr.io/REPLACE_WITH_NAMESPACE/guestbook:v2`; no actual registry namespace was guessed. No apply output is claimed.

@@ -1,18 +1,11 @@
-Task number: 01
-Purpose: Provide the Dockerfile used to package the Guestbook.
-Command or source code:
-```dockerfile
-FROM nginx:1.27-alpine
+Task 1 — Dockerfile
 
-COPY index.html /usr/share/nginx/html/index.html
+Source: `Dockerfile` (copied as `submission/evidence/Dockerfile`).
+Application: Official IBM Skills Network Guestbook Go server, port 3000.
 
-EXPOSE 80
+Verification:
+- Dockerfile source is present.
+- The Go application compiled locally with Go 1.26.4.
+- Docker image build: BLOCKED; Docker CLI/engine is not installed.
 
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD wget -q -O /dev/null http://127.0.0.1/ || exit 1
-
-CMD ["nginx", "-g", "daemon off;"]
-```
-Execution output: Docker image build was not run; the Docker CLI is not installed (`Get-Command docker` reported NOT INSTALLED).
-Execution status: BLOCKED (image build/inspection unavailable).
-Observations: Dockerfile source is present at the project root. No successful image build is claimed.
+No Docker image build success is claimed.

@@ -1,90 +1,43 @@
-# IBM Cloud Kubernetes Guestbook — Assignment Answers
+# Assignment Answer Status
 
-These answers reflect the current project sources and actual environment checks. Cloud command outputs that were not captured are explicitly marked BLOCKED; they must not be replaced with invented output.
+This file is a transparent status record, not a completed answer sheet. Missing IBM Cloud and Kubernetes command output is not fabricated. The requested `answer.txt` cannot be completed until the blocked commands are run in the authenticated course environment.
 
-## Question 1 — Updated Dockerfile
+## Question 1 — Dockerfile
 
-Actual project source (`Dockerfile`):
+The current Dockerfile source is captured in `submission/evidence/Dockerfile`. It packages the official Go Guestbook on port 3000. The Docker image build is **BLOCKED** because Docker and its engine are unavailable.
 
-```dockerfile
-FROM nginx:alpine
+## Question 2 — IBM Container Registry images
 
-COPY index.html /usr/share/nginx/html/index.html
+**BLOCKED.** `ibmcloud cr images` was not run: IBM Cloud CLI, registry authentication, and the actual namespace are unavailable. No registry output is claimed.
 
-EXPOSE 80
+## Question 3 — Initial Guestbook v1 HTML
 
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD wget -q -O /dev/null http://127.0.0.1/ || exit 1
+The complete source snapshot with `<title>Guestbook - v1</title>` and `<h1>Guestbook - v1</h1>` is `submission/evidence/app`.
 
-CMD ["nginx", "-g", "daemon off;"]
-```
+## Question 4 — HPA output
 
-Status: Source available. A Docker build and push were not run because Docker is not installed.
+**BLOCKED.** No `kubectl get hpa` output is available. `hpa.yml` configures CPU utilization at 60%, with 1–4 replicas; this manifest is not evidence of a live HPA.
 
-## Question 2 — IBM Cloud Container Registry image, tag v1
+## Question 5 — Autoscaling
 
-Command required: `ibmcloud cr images`
+**BLOCKED.** No cluster or metrics were available to generate load or observe replicas. No scaling result is claimed.
 
-Status: **BLOCKED** — IBM Cloud CLI is not installed. No `crimages` output, registry namespace, or v1 tag was available to paste.
+## Question 6 — Updated image push
 
-## Question 3 — Initial index.html / Guestbook - v1
+**BLOCKED.** Docker, IBM Cloud CLI, registry authentication, and the namespace are unavailable. No push output or digest exists.
 
-Initial source snapshot preserved in `submission/evidence/task-03-default-index-html.txt`:
+## Question 7 — Updated Deployment apply
 
-```html
-<title>Guestbook - v1</title>
-<h1>Guestbook - v1</h1>
-```
+**BLOCKED.** kubectl, cluster access, and a real registry image reference are unavailable. The image field in `deployment.yml` remains an explicit placeholder.
 
-Status: Source snapshot available. The current root `index.html` is the v2 application.
+## Question 8 — Updated Guestbook v2 HTML
 
-## Question 4 — Horizontal Pod Autoscaler details
+The complete source with `<title>Guestbook - v2</title>` and `<h1>Guestbook - v2</h1>` is `submission/evidence/up-app`. The official Go application was compiled and locally smoke-tested; Kubernetes serving is unverified.
 
-Command required: `kubectl get hpa`
+## Question 9 — CPU revision history
 
-Status: **BLOCKED** — kubectl is not installed and no cluster output was available. No HPA table or replica count is claimed.
+**BLOCKED.** No Deployment or rollout history is available. No revision number is claimed.
 
-## Question 5 — Autoscaling / increased replicas
+## Question 10 — ReplicaSets after rollback
 
-Commands required: `kubectl get hpa`, `kubectl get deployment`, and `kubectl get pods`.
-
-Status: **BLOCKED** — kubectl and cluster access are unavailable. No CPU load test or increased replica count was observed.
-
-## Question 6 — Docker push of updated image
-
-Command pattern: `docker push us.icr.io/<actual-sn-labs-namespace>/guestbook:<updated-tag>`
-
-Status: **BLOCKED** — Docker and IBM Cloud CLI are not installed; the authenticated registry namespace is unknown. No push output or SHA-256 digest exists to paste.
-
-## Question 7 — Updated Kubernetes deployment applied
-
-Command required: `kubectl apply -f deployment.yml`
-
-Status: **BLOCKED** — kubectl and cluster access are unavailable. The image in `deployment.yml` still needs the actual IBM registry namespace. No apply output is claimed.
-
-## Question 8 — Updated index.html / Guestbook - v2
-
-Actual source in the root `index.html`:
-
-```html
-<title>Guestbook - v2</title>
-<h1 id="page-title">Guestbook - v2</h1>
-```
-
-Status: Source is available. Local browser behavior was tested; Kubernetes serving was not.
-
-## Question 9 — Deployment rollout history / CPU revision
-
-Commands required: `kubectl rollout history deployment/guestbook` and `kubectl rollout history deployment/guestbook --revision=<actual-CPU-revision-number>`.
-
-Status: **BLOCKED** — there is no accessible cluster Deployment or actual revision output. No CPU-related revision is claimed.
-
-## Question 10 — ReplicaSets after deployment rollback
-
-Command required: `kubectl get rs`
-
-Status: **BLOCKED** — no cluster rollback was executed, so no ReplicaSet output is available.
-
-## Submission status
-
-Questions 1, 3, and 8 have source content. Questions 2, 4–7, and 9–10 require real IBM Cloud/Docker/Kubernetes execution evidence. This answer document intentionally contains no fabricated registry listing, digest, HPA count, rollout revision, or ReplicaSet result and is not a complete cloud-execution submission.
+**BLOCKED.** No rollback was executed and no `kubectl get rs` output is available. No ReplicaSet names, counts, or rollback result are claimed.

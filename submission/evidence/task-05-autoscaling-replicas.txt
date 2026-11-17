@@ -1,6 +1,5 @@
-Task number: 05
-Purpose: Record an actual CPU-driven increase in Guestbook replicas.
-Command or source code: Intended observations: `kubectl get hpa --watch`, `kubectl get pods --watch`, and `kubectl get deployments --watch`.
-Actual execution output: Not available. Environment audit: `Get-Command kubectl` reported `kubectl: NOT INSTALLED`.
-Execution status: BLOCKED (no Kubernetes context/cluster access).
-Observations: `hpa.yml` defines CPU target 60%, minimum 1, maximum 4, with Deployment CPU requests. No load test or replica increase was observed or is claimed.
+Task 5 — Autoscaling
+
+Execution status: BLOCKED; no Kubernetes cluster, metrics server, or deployed Guestbook is accessible.
+
+No load test or replica increase was observed. No autoscaling success is claimed.

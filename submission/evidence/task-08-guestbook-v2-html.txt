@@ -1,11 +1,20 @@
-Task number: 08
-Purpose: Capture the v2 HTML title and heading using the assignment's accepted ASCII-hyphen wording.
-Command or source code:
-```html
-<title>Guestbook - v2</title>
-...
-<h1 id="page-title">Guestbook - v2</h1>
+Task 8 — Updated Guestbook v2 HTML and local application smoke test
+
+Source snapshot: `submission/evidence/up-app`.
+
+The v2 title and heading are present in the official Guestbook frontend. The application was built in a temporary directory with Go 1.26.4 and run locally; Docker or Kubernetes was not involved.
+
+Actual smoke-test results:
+```text
+GO_BUILD_EXIT=0
+HOME_STATUS=200 TITLE_OK=True HEADING_OK=True
+HELLO_STATUS=200
+RPUSH_BODY=[
+"smoke-test"
+]
+LRANGE_BODY=[
+"smoke-test"
+]
 ```
-Actual execution output: Opened the local `index.html` in the browser after the change. The page title and rendered H1 both showed `Guestbook - v2`. A previously submitted local test entry remained visible after reload.
-Execution status: COMPLETE (source and local browser verification); BLOCKED (container/cluster serving verification).
-Observations: The title and heading use ASCII hyphens as accepted by this assignment. The full responsive application source is in `index.html`. Container/cluster serving has not been tested.
+
+The entry was submitted through the Guestbook API and read back successfully. This verifies local source/runtime behavior only, not a cloud deployment.

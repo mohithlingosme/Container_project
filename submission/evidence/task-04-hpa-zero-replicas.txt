@@ -1,6 +1,6 @@
-Task number: 04
-Purpose: Capture the requested HPA/zero-replica observation without configuring an invalid HPA minimum.
-Command or source code: Intended live commands: `kubectl get hpa` and `kubectl get deployments`.
-Actual execution output: Not available. Environment audit: `Get-Command kubectl` reported `kubectl: NOT INSTALLED`.
-Execution status: BLOCKED (cluster unavailable).
-Observations: The manifest uses the Kubernetes-valid `minReplicas: 1`. An HPA configured with a minimum of zero is not valid. No zero-replica observation is claimed; any transient live observation must be captured from the course cluster and cannot be guaranteed.
+Task 4 — Horizontal Pod Autoscaler
+
+Required command: `kubectl get hpa`
+Execution status: BLOCKED; kubectl and a cluster context are unavailable.
+
+The local `hpa.yml` configures CPU utilization at 60%, minimum 1 replica, and maximum 4 replicas. No live HPA table or zero-replica observation is available. Kubernetes HPA does not permit a configured minimum of zero.

@@ -1,19 +1,8 @@
-Task number: 03
-Purpose: Preserve the initial Guestbook HTML source with the required default title and heading.
-Command or source code:
-```html
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Guestbook - v1</title>
-</head>
-<body>
-  <h1>Guestbook - v1</h1>
-</body>
-</html>
-```
-Execution output: Source snapshot prepared for this evidence package. It documents the initial v1 content; the current root `index.html` is the requested v2 application.
-Execution status: COMPLETE (source evidence).
-Observations: The initial title and heading match the assignment's Guestbook - v1 wording. This is a source snapshot, not evidence of a cloud deployment.
+Task 3 — Initial Guestbook v1 HTML
+
+The complete official Guestbook frontend snapshot with the required v1 title and heading is in `submission/evidence/app`:
+
+- `<title>Guestbook - v1</title>`
+- `<h1>Guestbook - v1</h1>`
+
+This is source evidence, not proof of a deployed v1 image.
